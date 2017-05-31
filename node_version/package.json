@@ -1,0 +1,15 @@
+{
+  "name": "c64image_node_version",
+  "version": "1.0.0",
+  "description": "",
+  "main": "c64image.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@rdad",
+  "license": "ISC",
+  "dependencies": {
+    "get-pixels": "^3.3.0",
+    "save-pixels": "^2.3.4"
+  }
+}
