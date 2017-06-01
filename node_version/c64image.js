@@ -5,10 +5,11 @@ const savePixels    = require('save-pixels');
 
 const filter64 = require('./filter64');
 
-let pixels;
+let pixels,
+    file = "assets/portrait.jpg";
 
 
-getPixels("assets/88.png", (err, data) => {
+getPixels(file, (err, data) => {
 
   if(err) {
     console.log("Bad image path")
@@ -28,19 +29,19 @@ getPixels("assets/88.png", (err, data) => {
     };
 
     filter64.init(pixels);
-    filter64.pixelate_config(350);
+    filter64.pixelate_config(4);
  
   //Loop over all cells 
   for(let i=1; i<image.width-1; ++i) {
     for(let j=1; j<image.height-1; ++j) {
-        //filter64.to_gray(i, j);
-        
-        filter64.pixelate(i, j);
+        //filter64.to_gray(i, j);  
+        //filter64.pixelate(i, j);
         filter64.dither(i, j);
-       
+        filter64.c64palette(i, j);    
     }
   }
+    let file_type = file.split('.').pop();
 
-    var result_file = fs.createWriteStream("assets/dither.png");
-    savePixels(filter64.get_result(), "png").pipe(result_file);
+    var result_file = fs.createWriteStream("assets/c64palette."+file_type);
+    savePixels(filter64.get_result(), file_type, {quality: 90}).pipe(result_file);
 })
