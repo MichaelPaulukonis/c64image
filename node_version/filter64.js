@@ -17,6 +17,14 @@ let config = {
         /*lab: [
             [0,0,0], [28.97789348020777, 39.03488183293191, -59.19594490162029]
         ]*/
+        // https://en.wikipedia.org/wiki/List_of_color_palettes
+        // https://mrob.com/pub/xapple2/colors.html
+        apple2: [
+            [0,0,0], [156, 156, 156], [255,255,255], [96, 78, 189],
+            [208, 195, 255], [255, 68, 253], [227, 30, 96], [255, 160, 208],
+            [255, 106, 60], [96, 114, 3], [208, 221, 141], [20, 245, 60],
+            [0, 163, 96], [114, 255, 208],  [20, 207, 253]
+        ]
     }
 };
 
@@ -44,6 +52,47 @@ function put(x,y,r,g,b){
     pixels.set(x,y,2, b);
 }
 
+// --------------------- C O N T R A S T ---------------------
+
+/**
+ * 
+ * @param {-100,100} contrast 
+ */
+function contrast_config(contrast){
+
+    config.contrast = {     
+        amount: contrast
+    };
+}
+
+function clamp(num) {
+  return num <= 0 ? 0 : num >= 255 ? 255 : num;
+}
+
+function contrast(x,y){
+
+    //outputColor.rgb = (outputColor.rgb - 0.5f) * (_Contrast) + 0.5f;
+    //factor * (data[i] - 128) + 128;
+    //var factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
+    //let contrast = config.pixelate.contrast * 2;
+
+    let contrast = (config.contrast.amount/100) + 1;  //convert to decimal & shift range: [0..2]
+    let intercept = 128 * (1 - contrast);
+
+    let r = pixels.get(x,y,0) * contrast + intercept,
+        g = pixels.get(x,y,1) * contrast + intercept,
+        b =  pixels.get(x,y,2) * contrast + intercept;
+    
+    // clamp
+
+
+    put(x,y,
+        clamp(r),
+        clamp(g),
+        clamp(b)
+    );
+}
+
 
 // --------------------- T O   G R A Y ---------------------
 
@@ -59,8 +108,32 @@ function to_gray(x,y){
 function pixelate_config(scale){
 
     config.pixelate = {     
-        scale: scale * 15
+        scale: scale * 10
     };
+}
+
+function  pixelate3(x,y){
+
+    let pixelsize = 500;
+    let size = {
+        x: pixels.shape[0],
+        y: pixels.shape[1]
+    };
+
+    let u = x,
+        v = y,
+        divx = size.x * pixelsize / size.y,
+        divy = pixelsize;
+    
+    u = Math.floor(u * divx) / divx;
+    v = Math.floor(v * divy) / divy;
+
+    put(x,y,pixels.get(u,v,0),pixels.get(u,v,1),pixels.get(u,v,2));
+
+    /*"vec2 uv = gl_FragCoord.xy / size.xy;",
+	"vec2 div = vec2(size.x * pixelSize / size.y, pixelSize);",
+	"uv = floor(uv * div)/div;",
+	"gl_FragColor = texture2D(tDiffuse, uv);",*/
 }
 
 function pixelate(x,y){
@@ -130,4 +203,4 @@ function c64palette(x,y){
 }
 
 
-module.exports = { init, get_result, to_gray, pixelate, pixelate_config, dither, c64palette };
+module.exports = { init, get_result, to_gray, pixelate, pixelate_config, dither, c64palette, contrast, contrast_config };
