@@ -5,6 +5,8 @@ const savePixels    = require('save-pixels');
 
 const filter64 = require('./filter64');
 
+const palette = require('./filters/palette_filter');
+
 let pixels,
     file = "assets/portrait.jpg";
 
@@ -31,6 +33,7 @@ getPixels(file, (err, data) => {
     filter64.init(pixels);
     filter64.pixelate_config(15);
     filter64.contrast_config(80);
+    palette.init(pixels, 'apple2');
 
   //Loop over all cells 
   for(let i=1; i<image.width-1; ++i) {
@@ -38,10 +41,11 @@ getPixels(file, (err, data) => {
         //filter64.to_gray(i, j);  
         //filter64.pixelate(i, j);
         //filter64.dither(i, j);
-        filter64.c64palette(i, j); 
+        //filter64.c64palette(i, j); 
          //filter64.contrast(i, j);
-         filter64.pixelate(i, j);
+         //filter64.pixelate(i, j);
          //filter64.dither(i, j);   
+         palette.filter(i,j);
     }
   }
     let file_type = file.split('.').pop();
