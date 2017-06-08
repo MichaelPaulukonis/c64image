@@ -1,3 +1,4 @@
+// filter module
 
 const palette = require('./palette_filter');
 const dither  = require('./dither_filter');
