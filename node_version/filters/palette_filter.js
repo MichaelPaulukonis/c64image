@@ -1,7 +1,7 @@
 const color_helper = require('./color_helper');
+const pixel_helper = require('./pixel_helper');
 
-let pixels,
-    palette_target = '';
+let pixels, pixels_type;
 
 let config = {
     
@@ -24,17 +24,26 @@ let config = {
         ]
 };
 
-function init( data, palette_name ){
-    pixels = data;
-    palette_target = palette_name;
+// @todo : gain de perf en stockqnt directement la palette en LAB / http://colormine.org/convert/rgb-to-lab
+
+
+function init( data ){
+    pixels = data.pixels;
+    pixels_type = data.type;
 }
 
-function filter(x,y){
+/**
+ * 
+ * @param {integer} x 
+ * @param {integer} y 
+ * @param {object} options nam{string} : nom de la palette 
+ */
+function on_pixel(x,y, options){
     
     let match    = [0,0,0],
         best_dot = 100,
         color    = color_helper.rgb2lab([pixels.get(x,y,0), pixels.get(x,y,1), pixels.get(x,y,2)]),
-        palette  = config[palette_target];
+        palette  = config[options.name];
 
         if(typeof palette === 'undefined'){
              console.log("Palette filter error : palette name unknown");
@@ -51,13 +60,7 @@ function filter(x,y){
         }
     }
 
-    put(x,y,match[0], match[1], match[2]);
+    pixel_helper.put(pixels, x,y,match[0], match[1], match[2]);
 }
 
-function put(x,y,r,g,b){
-    pixels.set(x,y,0, r);
-    pixels.set(x,y,1, g);
-    pixels.set(x,y,2, b);
-}
-
-module.exports = { init, filter };
+module.exports = { init, on_pixel };
