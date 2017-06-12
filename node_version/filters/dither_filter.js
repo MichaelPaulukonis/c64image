@@ -23,12 +23,16 @@ function on_pixel(x,y, options = {name: "bayer"}){
 
     switch(options.name){
 
-        case "bayer":
-            [r,g,b] = bayer(x,y);
+        case "bayer8":
+            [r,g,b] = bayer8(x,y);
             break;
         
         case "floyd_steinberg":
               [r,g,b] = floyd_steinberg(x,y);
+            break;
+        
+         case "jjn":
+              [r,g,b] = jjn(x,y);
             break;
         
          case "atkinson":
@@ -40,6 +44,47 @@ function on_pixel(x,y, options = {name: "bayer"}){
     }
     
     pixel_helper.put(pixels, x ,y ,r ,g ,b );
+}
+
+// Sources
+// http://www.tannerhelland.com/4660/dithering-eleven-algorithms-source-code/
+// http://www.efg2.com/Lab/Library/ImageProcessing/DHALF.TXT
+
+
+// --------------------- J A R V I S  J U D I C E  N I N K E ------------------------
+
+function jjn(x,y){
+
+    let r = jjn_channel(x,y,0);
+    let g = jjn_channel(x,y,1);
+    let b = jjn_channel(x,y,2);
+
+    return [r ,g ,b];
+}
+
+function jjn_channel(x,y,channel){
+
+    let cc = pixels.get(x,y,channel);
+    let rc = (cc<128)? 0 : 255;
+    let err = cc-rc;
+    let o48 = 1/48;
+    
+    diffuse_error(x+1, y,   (err*7)*o48, channel);
+    diffuse_error(x+2, y,   (err*5)*o48, channel);
+
+    diffuse_error(x-2, y+1, (err*3)*o48, channel);
+    diffuse_error(x-1, y+1, (err*5)*o48, channel);
+    diffuse_error(x, y+1,   (err*7)*o48, channel);
+    diffuse_error(x+1, y+1, (err*5)*o48, channel);
+    diffuse_error(x+2, y+1, (err*3)*o48, channel);
+
+    diffuse_error(x-2, y+2, (err)*o48, channel);
+    diffuse_error(x-1, y+2, (err*3)*o48, channel);
+    diffuse_error(x, y+2,   (err*5)*o48, channel);
+    diffuse_error(x+1, y+2, (err*3)*o48, channel);
+    diffuse_error(x+2, y+2, (err)*o48, channel);
+
+    return rc;
 }
 
 
@@ -107,9 +152,9 @@ function diffuse_error(x, y, error, channel){
 }
 
 
-// --------------------- B A Y E R ------------------------
+// --------------------- B A Y E R 8 ------------------------
 
-function bayer(x,y){
+function bayer8(x,y){
 
     let nx = parseInt(x % 8.0);
     let ny = parseInt(y % 8.0);
