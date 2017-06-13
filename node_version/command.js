@@ -7,7 +7,9 @@ const filter = require('./filters/filter');
 const chrono = require('./chrono');
 const pixel_container = require('./lib/pixel_container');
 
-let file = "assets/sources/portrait.jpg";
+const argument_list = require('minimist')(process.argv.slice(2));
+let file = argument_list['_'][0];
+
 
 getPixels(file, (err, data) => {
 
@@ -18,7 +20,9 @@ getPixels(file, (err, data) => {
 
     pixel_container.init(data);
 
-    console.log("pixels to proceed : ", pixel_container.get_width()*pixel_container.get_height(), "px");
+    let nb_pixels = pixel_container.get_width()*pixel_container.get_height();
+
+    console.log("pixels to proceed : ", nb_pixels, "px");  
 
     filter.init(pixel_container);
 
@@ -26,18 +30,17 @@ getPixels(file, (err, data) => {
 
     for(let i=1; i<pixel_container.get_width()-1; ++i) {
         for(let j=1; j<pixel_container.get_height()-1; ++j) {  
-            
+
             //filter.to_gray.on_pixel(i,j);
             //filter.dither.on_pixel(i,j, {name: 'floyd_steinberg'});
-            //filter.palette.on_pixel(i,j, {name: 'cga'});
+            filter.pixelate.on_pixel(i,j, {scale: 5});
+            filter.palette.on_pixel(i,j, {name: 'apple2'});
             
             //filter.dither.on_pixel(i,j, {name: 'bayer4'});
-            //filter.contrast.on_pixel(i,j, {amount: 100});
-           
-            //filter.to_gray.on_pixel(i,j);
-           
+            //filter.contrast.on_pixel(i,j, {amount: 100});          
+            //filter.to_gray.on_pixel(i,j);         
             // filter.dither.on_pixel(i,j, {name: 'floyd_steinberg'});
-            filter.pixelate.on_pixel(i,j, {scale: 30});
+
         }
     }
 

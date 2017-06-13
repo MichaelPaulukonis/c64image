@@ -9,10 +9,10 @@ function init( data ){
     pixel_container = data;
 }
 
-function on_pixel(x,y, options = {scale: 150}){
+function on_pixel(x,y, options = {scale: 1.5}){
     
-    let dx = options.scale*(1/pixel_container.get_width());
-    let dy = options.scale*(1/pixel_container.get_height());
+    let dx = options.scale*10*(1/pixel_container.get_width());
+    let dy = options.scale*10*(1/pixel_container.get_height());
     let nx = Math.floor(dx * Math.floor(x/dx));
     let ny = Math.floor(dy * Math.floor(y/dy));
 

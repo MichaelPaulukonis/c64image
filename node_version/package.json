@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "get-pixels": "^3.3.0",
+    "minimist": "^1.2.0",
     "save-pixels": "^2.3.4"
   }
 }
