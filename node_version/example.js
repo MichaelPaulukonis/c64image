@@ -35,8 +35,9 @@ getPixels(file, (err, data) => {
         for(let j=1; j<image.height-1; ++j) {  
             
             //filter.to_gray.on_pixel(i,j);
-            filter.dither.on_pixel(i,j, {name: 'bayer8'});
-            //filter.palette.on_pixel(i,j, {name: 'c64'});
+            //filter.dither.on_pixel(i,j, {name: 'floyd_steinberg'});
+            filter.palette.on_pixel(i,j, {name: 'web'});
+            //filter.dither.on_pixel(i,j, {name: 'jjn'});
             //filter.contrast.on_pixel(i,j, {amount: 80});
             //filter.to_gray.on_pixel(i,j);
             //filter.pixelate.on_pixel(i,j);
