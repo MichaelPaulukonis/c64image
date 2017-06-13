@@ -1,10 +1,9 @@
-const color_helper = require('./color_helper');
-const pixel_helper = require('./pixel_helper');
+const color_helper =  require('../lib/color_helper');
 
-let pixels, pixels_type;
+let pixel_container;
 
 let config = {   
-};
+   };
 
 // sRGB luminance(Y) values
 
@@ -13,8 +12,7 @@ const gY = 0.715158;
 const bY = 0.072187;
 
 function init( data ){
-    pixels = data.pixels;
-    pixels_type = data.type;
+    pixel_container = data;
 }
 
 function on_pixel(x,y, options = {name: 'luminance'}){
@@ -26,8 +24,8 @@ function on_pixel(x,y, options = {name: 'luminance'}){
         return;
     }
 
-    let luma = algo['luminance'](pixels.get(x,y,0), pixels.get(x,y,1), pixels.get(x,y,2))
-    pixel_helper.put(pixels, x, y, luma, luma, luma);
+    let luma = algo['luminance'](pixel_container.get(x,y,0), pixel_container.get(x,y,1), pixel_container.get(x,y,2))
+    pixel_container.set(x, y, luma, luma, luma);
 }
 
 const algo = {

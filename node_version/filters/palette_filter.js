@@ -1,7 +1,6 @@
-const color_helper = require('./color_helper');
-const pixel_helper = require('./pixel_helper');
+const color_helper = require('../lib/color_helper');
 
-let pixels, pixels_type;
+let pixel_container;
 
 let config = {
     
@@ -78,12 +77,11 @@ let config = {
         ]
 };
 
-// @todo : gain de perf en stockqnt directement la palette en LAB / http://colormine.org/convert/rgb-to-lab
+// @todo : gain de perf en stockant directement la palette en LAB / http://colormine.org/convert/rgb-to-lab
 
 
 function init( data ){
-    pixels = data.pixels;
-    pixels_type = data.type;
+    pixel_container = data;
 }
 
 /**
@@ -96,7 +94,7 @@ function on_pixel(x,y, options){
     
     let match    = [0,0,0],
         best_dot = 100,
-        color    = color_helper.rgb2lab([pixels.get(x,y,0), pixels.get(x,y,1), pixels.get(x,y,2)]),
+        color    = color_helper.rgb2lab([pixel_container.get(x,y,0), pixel_container.get(x,y,1), pixel_container.get(x,y,2)]),
         palette  = config[options.name];
 
         if(typeof palette === 'undefined'){
@@ -114,7 +112,7 @@ function on_pixel(x,y, options){
         }
     }
 
-    pixel_helper.put(pixels, x,y,match[0], match[1], match[2]);
+    pixel_container.set(x,y,match[0], match[1], match[2]);
 }
 
 module.exports = { init, on_pixel };

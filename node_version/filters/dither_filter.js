@@ -1,21 +1,15 @@
-const color_helper = require('./color_helper');
-const pixel_helper = require('./pixel_helper');
+const color_helper = require('../lib/color_helper');
 
-let pixels, pixels_type,
-    width, height;
+let pixel_container;
 
 let config = {   
     map8: [0, 32, 8, 40, 2, 32, 10, 42, 48, 16, 56, 24, 50, 18,58, 26, 12, 44, 4, 36, 14, 46, 6, 38, 60, 28, 52, 20, 62, 30, 54, 22, 3, 35, 11, 43, 1, 33, 9, 41, 51, 19, 59, 27, 49, 17, 57, 25, 15, 47, 7, 39, 13, 45, 5, 37, 63, 31, 55, 23, 61, 29, 53, 21],
     map4: [ 15, 135,  45, 165, 195,  75, 225, 105,60, 180,  30, 150, 240, 120, 210,  90 ],
 };
 
+
 function init( data ){
-
-    pixels = data.pixels;
-    pixels_type = data.type;
-
-    width = pixels.shape[0];
-    height = pixels.shape[1];
+    pixel_container = data;
 }
 
 function on_pixel(x,y, options = {name: "bayer"}){
@@ -48,7 +42,7 @@ function on_pixel(x,y, options = {name: "bayer"}){
             console.log("Dither filter error : algo not found");
     }
     
-    pixel_helper.put(pixels, x ,y ,r ,g ,b );
+    pixel_container.set(x ,y ,r ,g ,b );
 }
 
 // Sources
@@ -69,7 +63,7 @@ function jjn(x,y){
 
 function jjn_channel(x,y,channel){
 
-    let cc = pixels.get(x,y,channel);
+    let cc = pixel_container.get(x,y,channel);
     let rc = (cc<128)? 0 : 255;
     let err = cc-rc;
     let o48 = 1/48;
@@ -106,7 +100,7 @@ function atkinson(x,y){
 
 function atkinson_channel(x,y,channel){
 
-    let cc = pixels.get(x,y,channel);
+    let cc = pixel_container.get(x,y,channel);
     let rc = (cc<128)? 0 : 255;
     let err = (cc-rc)>>2;
     
@@ -136,7 +130,7 @@ function floyd_steinberg(x,y){
 
 function pixel_channel(x,y,channel){
 
-    let cc = pixels.get(x,y,channel);       // current color
+    let cc = pixel_container.get(x,y,channel);       // current color
     let rc = (cc<128)? 0 : 255;             // real (rounded) color
     let err = cc-rc;                   // error amount
     
@@ -150,10 +144,10 @@ function pixel_channel(x,y,channel){
 
 function diffuse_error(x, y, error, channel){
 
-    c = pixel_helper.get(pixels,x,y);
-    c[channel] = pixel_helper.clamp_color( c[channel] + error );
+    c = pixel_container.get(x,y);
+    c[channel] = pixel_container.clamp_color( c[channel] + error );
 
-    pixel_helper.put(pixels, x ,y ,c[0] ,c[1] ,c[2]);
+    pixel_container.set(x ,y ,c[0] ,c[1] ,c[2]);
 }
 
 
@@ -164,9 +158,9 @@ function bayer(dim, x,y){
     let nx = parseInt(x % dim);
     let ny = parseInt(y % dim);
 
-    let r = find_closest(dim, nx,ny, pixels.get(x,y,0));
-    let g = find_closest(dim, nx,ny, pixels.get(x,y,1));
-    let b = find_closest(dim, nx,ny, pixels.get(x,y,2));
+    let r = find_closest(dim, nx,ny, pixel_container.get(x,y,0));
+    let g = find_closest(dim, nx,ny, pixel_container.get(x,y,1));
+    let b = find_closest(dim, nx,ny, pixel_container.get(x,y,2));
 
     return [r,g,b];
 }
