@@ -5,7 +5,8 @@ let pixels, pixels_type,
     width, height;
 
 let config = {   
-    map: [0, 32, 8, 40, 2, 32, 10, 42, 48, 16, 56, 24, 50, 18,58, 26, 12, 44, 4, 36, 14, 46, 6, 38, 60, 28, 52, 20, 62, 30, 54, 22, 3, 35, 11, 43, 1, 33, 9, 41, 51, 19, 59, 27, 49, 17, 57, 25, 15, 47, 7, 39, 13, 45, 5, 37, 63, 31, 55, 23, 61, 29, 53, 21]
+    map8: [0, 32, 8, 40, 2, 32, 10, 42, 48, 16, 56, 24, 50, 18,58, 26, 12, 44, 4, 36, 14, 46, 6, 38, 60, 28, 52, 20, 62, 30, 54, 22, 3, 35, 11, 43, 1, 33, 9, 41, 51, 19, 59, 27, 49, 17, 57, 25, 15, 47, 7, 39, 13, 45, 5, 37, 63, 31, 55, 23, 61, 29, 53, 21],
+    map4: [ 15, 135,  45, 165, 195,  75, 225, 105,60, 180,  30, 150, 240, 120, 210,  90 ],
 };
 
 function init( data ){
@@ -23,8 +24,12 @@ function on_pixel(x,y, options = {name: "bayer"}){
 
     switch(options.name){
 
-        case "bayer8":
-            [r,g,b] = bayer8(x,y);
+        case "bayer4":
+            [r,g,b] = bayer(4,x,y);
+            break;
+        
+         case "bayer8":
+            [r,g,b] = bayer(8,x,y);
             break;
         
         case "floyd_steinberg":
@@ -152,27 +157,28 @@ function diffuse_error(x, y, error, channel){
 }
 
 
-// --------------------- B A Y E R 8 ------------------------
+// --------------------- B A Y E R ------------------------
 
-function bayer8(x,y){
+function bayer(dim, x,y){
 
-    let nx = parseInt(x % 8.0);
-    let ny = parseInt(y % 8.0);
+    let nx = parseInt(x % dim);
+    let ny = parseInt(y % dim);
 
-    let r = find_closest(nx,ny, pixels.get(x,y,0));
-    let g = find_closest(nx,ny, pixels.get(x,y,1));
-    let b = find_closest(nx,ny, pixels.get(x,y,2));
+    let r = find_closest(dim, nx,ny, pixels.get(x,y,0));
+    let g = find_closest(dim, nx,ny, pixels.get(x,y,1));
+    let b = find_closest(dim, nx,ny, pixels.get(x,y,2));
 
     return [r,g,b];
 }
 
-function find_closest(x, y, c){
+function find_closest(dim, x, y, c){
 
     let limit = 0;
 
-    if(x<8){
-        let index = x + (y*8);
-        limit = (config.map[index]+1) * 4; ///64.0;
+    if(x<dim){
+        let index = x + (y*dim);
+        let map = (dim == 8) ? config.map8 : config.map4;
+        limit = (map[index]+1) * (dim*.5); ///64.0;
     }
 
     if(c < limit){

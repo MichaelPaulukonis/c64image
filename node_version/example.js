@@ -36,8 +36,8 @@ getPixels(file, (err, data) => {
             
             //filter.to_gray.on_pixel(i,j);
             //filter.dither.on_pixel(i,j, {name: 'floyd_steinberg'});
-            filter.palette.on_pixel(i,j, {name: 'web'});
-            //filter.dither.on_pixel(i,j, {name: 'jjn'});
+           // filter.palette.on_pixel(i,j, {name: 'cga'});
+            filter.dither.on_pixel(i,j, {name: 'bayer4'});
             //filter.contrast.on_pixel(i,j, {amount: 80});
             //filter.to_gray.on_pixel(i,j);
             //filter.pixelate.on_pixel(i,j);
