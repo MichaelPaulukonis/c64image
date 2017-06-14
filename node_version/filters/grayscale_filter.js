@@ -16,15 +16,20 @@ function init( data ){
 }
 
 function on_pixel(x,y, options = {name: 'luminance'}){
-    
-    //options.name = options.name || "luminance";
 
     if(typeof algo[options.name] === 'undefined'){
         console.log('To gray gilter error : algo name unknown');
         return;
     }
 
-    let luma = algo['luminance'](pixel_container.get(x,y,0), pixel_container.get(x,y,1), pixel_container.get(x,y,2))
+    config.options = options;
+
+    if(config.options.number){
+        config.options.number = Math.min(config.options.number, 256);
+        config.options.number = Math.max(config.options.number, 0);
+    }
+
+    let luma = algo[options.name](pixel_container.get(x,y,0), pixel_container.get(x,y,1), pixel_container.get(x,y,2))
     pixel_container.set(x, y, luma, luma, luma);
 }
 
@@ -36,7 +41,17 @@ const algo = {
             rY*inv_gam_sRGB(r) +
             gY*inv_gam_sRGB(g) +
             bY*inv_gam_sRGB(b)
-    )
+    ),
+    desaturate: (r,g,b)=>(Math.max(r,g,b) + Math.min(r,g,b))*.5,
+    decomposition_min: (r,g,b)=>Math.min(r,g,b),
+    decomposition_max: (r,g,b)=>Math.max(r,g,b),
+    green: (r,g,b)=>g,
+    shade: (r,g,b)=>{
+        let n       = config.options.number || 8,
+            factor  = 255 / (n - 1),
+            avg     = (r+g+b)/3;
+        return parseInt(((avg/factor)+.5)) * factor
+    }
 };
 
 // HSP Color Model
