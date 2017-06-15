@@ -2,15 +2,15 @@
 let chrono_start = 0,
     chrono_end = 0;
 
-function start(){
+function start() {
     chrono_start = Date.now();
 }
 
-function stop(){
+function stop() {
     chrono_end = Date.now();
 }
 
-function get_result(){
+function get_result() {
     return chrono_end - chrono_start;
 }
 

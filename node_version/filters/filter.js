@@ -1,14 +1,14 @@
 // filter module
 
-const palette   = require('./palette_filter');
-const dither    = require('./dither_filter');
-const contrast  = require('./contrast_filter');
+const palette = require('./palette_filter');
+const dither = require('./dither_filter');
+const contrast = require('./contrast_filter');
 const grayscale = require('./grayscale_filter');
-const pixelate  = require('./pixelate_filter');
+const pixelate = require('./pixelate_filter');
 
 let pixel_container;
 
-function init( container ){
+function init(container) {
 
     pixel_container = container;
 
