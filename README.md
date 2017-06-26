@@ -16,15 +16,15 @@ I take 10 pictures from great photographer abd I apply some filter combinations 
 ![alt text](http://url/to/img.png)
 
 ![portrait_0](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_0.jpg)
-![portrait_1](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_1.jpg|alt=portrait_1)
-![portrait_2](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_2.jpg|alt=portrait_2)
-![portrait_3](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_3.jpg|alt=portrait_3)
-![portrait_4](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_4.jpg|alt=portrait_4)
-![portrait_5](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_5.jpg|alt=portrait_5)
-![portrait_6](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_6.jpg|alt=portrait_6)
-![portrait_7](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_7.jpg|alt=portrait_7)
-![portrait_8](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_8.jpg|alt=portrait_8)
-![portrait_9](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_9.jpg|alt=portrait_9)
+![portrait_1](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_1.jpg)
+![portrait_2](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_2.jpg)
+![portrait_3](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_3.jpg)
+![portrait_4](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_4.jpg)
+![portrait_5](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_5.jpg)
+![portrait_6](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_6.jpg)
+![portrait_7](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_7.jpg)
+![portrait_8](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_8.jpg)
+![portrait_9](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_9.jpg)
 
 The photographers are :
 
