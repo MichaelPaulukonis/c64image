@@ -13,8 +13,6 @@ The second will be made with shaders, and the last one with webassembly
 
 I take 10 pictures from great photographer abd I apply some filter combinations on it  : dither, pixelate, contrast, grayscale, palette ...
 
-![alt text](http://url/to/img.png)
-
 ![portrait_0](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_0.jpg)
 ![portrait_1](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_1.jpg)
 ![portrait_2](https://github.com/rdad/c64image/blob/master/node_version/assets/performance_filtered/portrait_2.jpg)
@@ -28,13 +26,13 @@ I take 10 pictures from great photographer abd I apply some filter combinations 
 
 The photographers are :
 
-0. cécile decorniquet
-1. christian tagliavini
-2. martin schoeller
+0. Cécile Decorniquet
+1. Christian Tagliavini
+2. Martin Schoeller
 3. Mihaela Noroc
 4. Yann Rabanier
 5. Donna Stevens
 6. Harcourt Paris
 7. Oleg Dou
-8. lee jeffries
-9. rehahn
+8. Lee Jeffries
+9. Rehahn
