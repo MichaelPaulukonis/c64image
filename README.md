@@ -3,7 +3,7 @@
 C64 image
 ========
 
-#### Goal ####
+### Goal ###
 
 I want to test performance for filtering image in Javascript.
 The first version is made with Node.js (no shaders)
