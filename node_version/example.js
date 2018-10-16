@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const getPixels = require('get-pixels');
 const savePixels = require('save-pixels');
@@ -7,46 +6,46 @@ const filter = require('./filters/filter');
 const chrono = require('./chrono');
 const pixel_container = require('./lib/pixel_container');
 
-let file = "assets/sources/portrait.jpg";
+let file = 'assets/sources/portrait.jpg';
 
 getPixels(file, (err, data) => {
+	if (err) {
+		console.log('Bad image path');
+		return;
+	}
 
-    if (err) {
-        console.log("Bad image path")
-        return
-    }
+	pixel_container.init(data);
 
-    pixel_container.init(data);
+	console.log('pixels to proceed : ', pixel_container.get_width() * pixel_container.get_height(), 'px');
 
-    console.log("pixels to proceed : ", pixel_container.get_width() * pixel_container.get_height(), "px");
+	filter.init(pixel_container);
 
-    filter.init(pixel_container);
+	chrono.start();
 
-    chrono.start();
+	for (let i = 1; i < pixel_container.get_width() - 1; ++i) {
+		for (let j = 1; j < pixel_container.get_height() - 1; ++j) {
+			//filter.to_gray.on_pixel(i,j);
+			//filter.dither.on_pixel(i, j, { name: 'floyd_steinberg' });
+			filter.palette.on_pixel(i, j, { name: 'apple2' });
 
-    for (let i = 1; i < pixel_container.get_width() - 1; ++i) {
-        for (let j = 1; j < pixel_container.get_height() - 1; ++j) {
+			//filter.quantize_color.on_pixel(i, j);
 
-            //filter.to_gray.on_pixel(i,j);
-            //filter.dither.on_pixel(i,j, {name: 'floyd_steinberg'});
-            //filter.palette.on_pixel(i,j, {name: 'cga'});
+			//filter.contrast.on_pixel(i,j, {amount: 100});
 
-            //filter.dither.on_pixel(i,j, {name: 'bayer4'});
-            //filter.contrast.on_pixel(i,j, {amount: 100});
+			//filter.to_gray.on_pixel(i,j);
 
-            //filter.to_gray.on_pixel(i,j);
+			//filter.pixelate.on_pixel(i, j, { scale: 10 });
+			// filter.dither.on_pixel(i,j, {name: 'floyd_steinberg'});
+			//filter.dither.on_pixel(i, j, { name: 'bayer4' });
+		}
+	}
 
-            // filter.dither.on_pixel(i,j, {name: 'floyd_steinberg'});
-            filter.pixelate.on_pixel(i, j, { scale: 30 });
-        }
-    }
+	chrono.stop();
 
-    chrono.stop();
+	let file_type = 'png'; //file.split('.').pop();
 
-    let file_type = 'png'; //file.split('.').pop();
+	var result_file = fs.createWriteStream('assets/filtered.' + file_type);
+	savePixels(pixel_container.get_pixels(), file_type, { quality: 90 }).pipe(result_file);
 
-    var result_file = fs.createWriteStream("assets/filtered." + file_type);
-    savePixels(pixel_container.get_pixels(), file_type, { quality: 90 }).pipe(result_file);
-
-    console.log(`image filtered in ${chrono.get_result()} ms`);
-})
+	console.log(`image filtered in ${chrono.get_result()} ms`);
+});
